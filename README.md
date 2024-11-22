@@ -22,11 +22,11 @@ Features:
 
 Clone the repository.
 
-**Install dependencies with **
+**Install dependencies with**
 
 pip install -r requirements.txt.
 
-**Run the app locally using **
+**Run the app locally using**
 streamlit run app.py
 
 Explore exchange rates, descriptive stats, and visualizations in an intuitive interface.

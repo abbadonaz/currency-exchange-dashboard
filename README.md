@@ -21,18 +21,26 @@ Features:
 **Usage:**
 
 Clone the repository.
-Install dependencies with pip install -r requirements.txt.
-Run the app locally using streamlit run app.py.
+
+**Install dependencies with **
+
+pip install -r requirements.txt.
+
+**Run the app locally using **
+streamlit run app.py
+
 Explore exchange rates, descriptive stats, and visualizations in an intuitive interface.
+
+
 Technologies Used:
 
 Python
 Pandas for data manipulation and analytics.
 Streamlit for the interactive dashboard.
 Matplotlib/Plotly (optional) for advanced visualizations.
-Future Enhancements:
 
-Integration with live exchange rate APIs.
+
+Future Enhancements:
 Advanced statistical analysis and predictive modeling.
 Enhanced interactivity with filters and user inputs.
 Feel free to contribute, report issues, or suggest new features! 🚀

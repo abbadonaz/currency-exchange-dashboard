@@ -7,11 +7,18 @@ Title: Descriptive Analytics for Exchange Rates
 Features:
 
 📊 Dynamic Data Table: Display exchange rates with highlighted maximum values for quick insights.
+
 📈 Descriptive Statistics: Automatically calculate and present metrics like mean, standard deviation, and min/max values.
+
 📉 Interactive Visualizations: Generate bar charts, line charts, and more for better trend analysis.
+
 ⚙️ Customizability: Easy-to-modify code to accommodate additional analytics or data sources.
+
 🛠 Built with Streamlit: A fast and interactive web app framework for Python.
-Usage:
+
+
+
+**Usage:**
 
 Clone the repository.
 Install dependencies with pip install -r requirements.txt.

@@ -1,6 +1,9 @@
 # Currency Exchange Dashboard
 
-Title: Descriptive Analytics for Exchange Rates
+# Descriptive Analytics for Exchange Rates
+
+![Screenshot](https://github.com/abbadonaz/currency-exchange-dashboard/blob/main/DescriptiveAnalytics/Helpers/images/Screenshot.PNG)
+
 
 **Description:** This repository provides a Streamlit-based application for visualizing and analyzing currency exchange rates. It integrates descriptive analytics to give users a comprehensive understanding of key trends and statistics. Ideal for financial analysts, data enthusiasts, and developers looking to explore or extend the capabilities of a descriptive analytics dashboard.
 

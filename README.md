@@ -18,7 +18,7 @@ This repository includes both the **dashboard implementation** and links to my *
 As part of this project, I documented my learning journey using **NotebookLM**.  
 These notes explain key machine learning algorithms and their applications.
 
-- 📘 [Isolation Forest Explaination](./Notes\IsolationForest.md)  
+- 📘 [Isolation Forest Explaination](./Notes/IsolationForest.md)  
 
 ---
 

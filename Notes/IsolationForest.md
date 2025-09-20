@@ -98,7 +98,7 @@ iForest is generally favored for its computational efficiency and its ability to
 
 ## 🎥 Video Summary
 
-[![Watch the summary video](IsolationForestExplaination)](Notes/Videos/Explainer__Isolation_Forest.mp4)  
+[![Watch the summary video](IsolationForestExplaination)](Videos/Explainer__Isolation_Forest.mp4)  
 
 ## ⚠️ Disclaimer
 

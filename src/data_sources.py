@@ -13,7 +13,7 @@ def _load_ecb_hist() -> pd.DataFrame:
     z = resp.content
     import zipfile
     with zipfile.ZipFile(io.BytesIO(z)) as zf:
-        with zf.open("Eurofxres-hist.csv") as f:
+        with zf.open("eurofxref-hist.csv") as f:
             df = pd.read_csv(f)
         df["Date"] = pd.to_datetime(df["Date"])
         df = df.sort_values("Date").set_index("Date")

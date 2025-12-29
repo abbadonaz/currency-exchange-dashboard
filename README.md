@@ -3,6 +3,7 @@
 An educational machine learning project that explores anomaly detection in currency exchange rates using algorithms such as **Isolation Forest**.
 
 This repository includes both the **dashboard implementation** and links to my **learning notes**, which document the process.
+<img width="1875" height="671" alt="image" src="https://github.com/user-attachments/assets/604f7860-5d34-4b0b-8aa8-21815083d952" />
 
 ---
 

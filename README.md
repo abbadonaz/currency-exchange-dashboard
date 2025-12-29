@@ -1,49 +1,40 @@
-# Currency Exchange Dashboard
+# 💱 Currency Exchange Dashboard
 
-# Descriptive Analytics for Exchange Rates
+An educational machine learning project that explores anomaly detection in currency exchange rates using algorithms such as **Isolation Forest**.
 
-![Screenshot](https://github.com/abbadonaz/currency-exchange-dashboard/blob/main/DescriptiveAnalytics/Helpers/images/Screenshot.PNG)
+This repository includes both the **dashboard implementation** and links to my **learning notes**, which document the process.
+<img width="1875" height="671" alt="image" src="https://github.com/user-attachments/assets/604f7860-5d34-4b0b-8aa8-21815083d952" />
 
+---
 
-**Description:** This repository provides a Streamlit-based application for visualizing and analyzing currency exchange rates. It integrates descriptive analytics to give users a comprehensive understanding of key trends and statistics. Ideal for financial analysts, data enthusiasts, and developers looking to explore or extend the capabilities of a descriptive analytics dashboard.
+## 📊 Project Overview
 
-Features:
+- Built with: Python, Streamlit, Scikit-learn, Pandas  
+- Core algorithms: Isolation Forest (for anomaly detection in exchange rate data)  
+- Purpose: Educational — combining practical coding with structured ML learning.  
+---
 
-📊 Dynamic Data Table: Display exchange rates with highlighted maximum values for quick insights.
+## 📝 Learning Notes
 
-📈 Descriptive Statistics: Automatically calculate and present metrics like mean, standard deviation, and min/max values.
+As part of this project, I documented my learning journey using **NotebookLM**.  
+These notes explain key machine learning algorithms and their applications.
 
-📉 Interactive Visualizations: Generate bar charts, line charts, and more for better trend analysis.
+- 📘 [Isolation Forest Explaination](./Notes/IsolationForest.md)  
 
-⚙️ Customizability: Easy-to-modify code to accommodate additional analytics or data sources.
+---
 
-🛠 Built with Streamlit: A fast and interactive web app framework for Python.
+## ⚠️ Disclaimer
 
+Parts of the learning notes were **generated with the assistance of NotebookLM** and then curated by me.  
+They are included here to **showcase my personal learning process** — not as finalized research material.  
 
+---
 
-**Usage:**
+## 🚀 Getting Started
 
-Clone the repository.
+Clone the repository:
 
-**Install dependencies with**
-
-pip install -r requirements.txt.
-
-**Run the app locally using**
-streamlit run app.py
-
-Explore exchange rates, descriptive stats, and visualizations in an intuitive interface.
-
-
-Technologies Used:
-
-Python
-Pandas for data manipulation and analytics.
-Streamlit for the interactive dashboard.
-Matplotlib/Plotly (optional) for advanced visualizations.
-
-
-Future Enhancements:
-Advanced statistical analysis and predictive modeling.
-Enhanced interactivity with filters and user inputs.
-Feel free to contribute, report issues, or suggest new features! 🚀
+```bash
+git clone https://github.com/abbadonaz/currency-exchange-dashboard.git
+cd currency-exchange-dashboard
+```

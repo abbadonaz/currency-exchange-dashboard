@@ -39,3 +39,42 @@ Clone the repository:
 git clone https://github.com/abbadonaz/currency-exchange-dashboard.git
 cd currency-exchange-dashboard
 ```
+
+## ⚡ Quickstart
+
+**Prerequisites:** Python 3.11+ and Git installed.
+
+1. Create and activate a virtual environment (Windows PowerShell):
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+(Or on Windows CMD: `\.venv\Scripts\activate`, macOS/Linux: `source .venv/bin/activate`)
+
+2. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+# (Optional) install the DescriptiveAnalytics extras:
+# pip install -r DescriptiveAnalytics/requirements.txt
+```
+
+3. (Optional) Create a `.env` file at the project root to override defaults (see `src/config.py`). Example:
+
+```env
+BASE_CURRENCY=EUR
+CACHE_TTL_MIN=60
+DATA_SOURCE=ECB
+```
+
+4. Run the app:
+
+```bash
+streamlit run main.py
+```
+
+Then open http://localhost:8501 in your browser. To run on a different port, add `--server.port <PORT>` to the command.
+
+---

@@ -18,12 +18,17 @@ def isolation_forest_anomalies(rates: pd.DataFrame, contamination: float = 0.01)
     return flags.reindex(rates.index, fill_value=False)
 
 def rolling_zscore_anomalies(rates: pd.DataFrame, window: int = 30, z_thresh: float = 2.5) -> pd.DataFrame:
-    """Boolean DF: True where |z-score| of daily returns >= threshold."""
+    """Detect anomalies using rolling z-score on returns.
+    Uses past-only statistics to avoid look-ahead bias."""
     rets = rates.pct_change()
-    mu = rets.rolling(window).mean()
-    sd = rets.rolling(window).std()
+    mu = rets.rolling(window).mean().shift(1)
+    sd = rets.rolling(window).std().shift(1)
+    sd = sd.replace(0, np.nan)
+
     z = (rets - mu) / sd
-    return (z.abs() >= z_thresh).fillna(False)
+    flags = z.abs() >= z_thresh
+
+    return flags.fillna(False)
 
 def isolation_forest_per_currency(
     features: dict[str, pd.DataFrame],

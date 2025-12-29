@@ -40,45 +40,71 @@ viz.render_kpis(metrics, base_currency)
 tab_ts, tab_returns, tab_heat, tab_anom, tab_about = st.tabs(
     ["Time Series","% Change","Heatmap","Anomalies","About"]
 )
+
 with tab_anom:
     st.subheader("Anomaly Detection")
 
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        z_win = st.slider("Z-score window (days)", 10, 90, 30)
-    with col2:
-        z_thr = st.slider("Z-score threshold", 1.5, 4.0, 2.5, 0.1)
-    with col3:
-        contam = st.slider("IsolationForest contamination", 0.001, 0.10, 0.01, 0.001)
+    from src import news as newsmod, features as feat
 
-    # Compute flags
+with tab_anom:
+    st.subheader("Anomaly Detection (Feature-aware)")
+
+    # Controls
+    colA, colB, colC, colD = st.columns(4)
+    with colA:
+        z_win = st.slider("Z-score window", 10, 90, 30)
+    with colB:
+        z_thr = st.slider("Z-score threshold", 1.5, 4.0, 2.5, 0.1)
+    with colC:
+        vol_win = st.slider("Vol window", 10, 120, 30)
+    with colD:
+        contam = st.slider("IF contamination", 0.001, 0.1, 0.01, 0.001)
+
+    # Baseline: z-score on returns
     z_flags = anomaly.rolling_zscore_anomalies(rates, window=z_win, z_thresh=z_thr)
-    iso_flags = anomaly.isolation_forest_anomalies(rates, contamination=contam)
+
+    # News sentiment fetch (RSS + Google News RSS)
+    with st.expander("News sentiment (source feeds)", expanded=False):
+        days_back = st.slider("News lookback (days)", 1, 30, 7, key="news_days")
+        feeds_text = st.text_area(
+            "RSS feeds (one per line",
+            "\n".join(newsmod.DEFAULT_FEEDS), height=120
+        )
+        feed_list = [ln.strip() for ln in feeds_text.splitlines() if ln.strip()]
+        if st.button("Fetch sentiment"):
+            with st.spinner("Fetching & scoring news..."):
+                df_news = newsmod.fetch_feeds(feed_list, days_back=days_back)
+                st.write(f"Fetched {len(df_news)} items")
+                st.dataframe(df_news[["published","title","sentiment","currencies","link"]], use_container_width=True)
+                sent_daily = newsmod.aggregate_daily_sentiment(df_news)
+                st.session_state["sent_daily"] = sent_daily
+        sent_daily = st.session_state.get("sent_daily", pd.DataFrame())
+
+    # Build per-currency feature tables: ret, vol, sent
+    feats = feat.build_currency_features(rates, sent_daily, vol_window=vol_win)
+    if_flags = anomaly.isolation_forest_per_currency(feats, contamination=contam)
 
     st.markdown("**Latest anomaly snapshot (today):**")
     latest = pd.DataFrame({
-        "Z-Score": z_flags.tail(1).T.iloc[:, 0],
-        "IsolationForest": iso_flags.tail(1).T.iloc[:, 0],
+        "Z-Score": z_flags.tail(1).T.iloc[:, 0] if not z_flags.empty else [],
+        "IF (ret+vol+sent)": if_flags.tail(1).T.iloc[:, 0] if not if_flags.empty else [],
     })
     st.dataframe(latest)
 
-    cur = st.selectbox("Inspect currency", options=list(rates.columns), index=0, key="anom_cur")
-    s = rates[cur].dropna()
-    zf = z_flags[cur].reindex(s.index, fill_value=False)
-    iff = iso_flags[cur].reindex(s.index, fill_value=False)
+    cur_pick = st.selectbox("Inspect currency", list(rates.columns), index=0, key="anom_cur")
+    s = rates[cur_pick].dropna()
+    zf = z_flags[cur_pick].reindex(s.index, fill_value=False) if not z_flags.empty else s==False
+    iff = if_flags[cur_pick].reindex(s.index, fill_value=False) if not if_flags.empty else s==False
 
+    import plotly.graph_objects as go
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=s.index, y=s.values, mode="lines", name=f"{cur}/{base_currency}"))
-    fig.add_trace(go.Scatter(
-        x=s.index[zf], y=s.values[zf], mode="markers", name="Z-score",
-        marker=dict(size=9, symbol="x")
-    ))
-    fig.add_trace(go.Scatter(
-        x=s.index[iff], y=s.values[iff], mode="markers", name="IsolationForest",
-        marker=dict(size=9, symbol="circle-open")
-    ))
-    fig.update_layout(title=f"Anomalies for {cur}/{base_currency}")
+    fig.add_trace(go.Scatter(x=s.index, y=s.values, mode="lines", name=f"{cur_pick}/{base_currency}"))
+    fig.add_trace(go.Scatter(x=s.index[zf], y=s.values[zf], mode="markers", name="Z-score", marker=dict(size=9, symbol="x")))
+    fig.add_trace(go.Scatter(x=s.index[iff], y=s.values[iff], mode="markers", name="IF (ret+vol+sent)", marker=dict(size=10, symbol="circle-open")))
+    fig.update_layout(title=f"Anomalies for {cur_pick}/{base_currency}")
     st.plotly_chart(fig, use_container_width=True)
+
+    st.caption("IsolationForest is trained **per currency** on features: return, rolling vol, and daily sentiment (0 if missing).")
 
 with tab_ts:
     st.plotly_chart(viz.plot_timeseries(rates, base_currency), use_container_width=True)
@@ -99,3 +125,6 @@ with tab_about:
 - **Structure**: `src/` modules for data, transforms, viz; tests under `tests/`.
 - **Next**: add forecasting/backtesting in `src/analytics.py` and a Biotech Ops tab.
 """)
+
+## TODO: Add sentiment analysis to anomaly detection part , does it work with header or with entire text? is it reliable?
+# TODO: make daily change vs eur respond to lookback 

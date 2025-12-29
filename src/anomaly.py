@@ -24,3 +24,28 @@ def rolling_zscore_anomalies(rates: pd.DataFrame, window: int = 30, z_thresh: fl
     sd = rets.rolling(window).std()
     z = (rets - mu) / sd
     return (z.abs() >= z_thresh).fillna(False)
+
+def isolation_forest_per_currency(
+    features: dict[str, pd.DataFrame],
+    contamination: float = 0.01,
+) -> pd.DataFrame:
+    """
+    Train one IsolationForest per currency on columns ['ret','vol','sent'].
+    Returns a boolean DataFrame flags indexed by date, columns=currency.
+    """
+    # Union all dates to a common index
+    all_idx = None
+    for df in features.values():
+        all_idx = df.index if all_idx is None else all_idx.union(df.index)
+    flags = pd.DataFrame(False, index=all_idx, columns=list(features.keys()))
+    for cur, df in features.items():
+        if df.shape[0] < 30:
+            continue
+        X = df[["ret","vol","sent"]].values
+        model = IsolationForest(
+            contamination=contamination, n_estimators=300, random_state=42, n_jobs=-1
+        )
+        preds = model.fit_predict(X)  # -1 anomalous
+        f = pd.Series(preds == -1, index=df.index)
+        flags.loc[df.index, cur] = f
+    return flags.sort_index()
